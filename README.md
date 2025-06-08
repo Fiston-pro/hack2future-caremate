@@ -23,7 +23,7 @@ Designed with simplicity, accessibility, and user experience in mind.
 
 ## 🚀 Demo
 
-[Link to the App](https://hack2future-caremate.vercel.app/)
+[Link to the App](https://hack2future-caremate.vercel.app/) (Hosted on Vercel)
 
 ---
 

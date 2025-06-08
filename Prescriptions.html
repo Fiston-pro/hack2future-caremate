@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Prescriptions</title>
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+  <style>
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: linear-gradient(to right, #e0f7fa, #e1bee7);
+      margin: 0;
+      padding: 20px;
+      animation: fadeIn 0.8s ease-in;
+    }
+
+    h1 {
+      text-align: center;
+      color: #4a148c;
+      margin-bottom: 30px;
+      font-size: 2.5em;
+      animation: slideDown 0.6s ease-out;
+    }
+
+    .container {
+      max-width: 900px;
+      margin: auto;
+      padding: 10px;
+    }
+
+    .prescription-card {
+      background: #fff;
+      border-radius: 16px;
+      padding: 20px;
+      margin-bottom: 25px;
+      box-shadow: 0px 8px 20px rgba(0, 0, 0, 0.1);
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+
+    .prescription-card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0px 12px 24px rgba(0, 0, 0, 0.15);
+    }
+
+    .prescription-card h3 {
+      color: #7b1fa2;
+      margin-bottom: 15px;
+    }
+
+    .prescription-card p {
+      margin: 5px 0;
+      color: #333;
+      font-size: 1.1em;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; }
+      to { opacity: 1; }
+    }
+
+    @keyframes slideDown {
+      from { transform: translateY(-30px); opacity: 0; }
+      to { transform: translateY(0); opacity: 1; }
+    }
+
+    /* Mobile responsiveness */
+    @media (max-width: 768px) {
+      .prescription-card {
+        padding: 16px;
+      }
+      h1 {
+        font-size: 2em;
+      }
+      .prescription-card p {
+        font-size: 1em;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>Your Prescriptions</h1>
+
+    <div class="prescription-card">
+      <h3>Prescription 1</h3>
+      <p><strong>Medication:</strong> Metformin</p>
+      <p><strong>Dosage:</strong> 500 mg</p>
+      <p><strong>Frequency:</strong> Twice a day</p>
+      <p><strong>Prescribed by:</strong> Dr. Smith</p>
+      <p><strong>Date:</strong> 2024-09-01</p>
+    </div>
+
+    <div class="prescription-card">
+      <h3>Prescription 2</h3>
+      <p><strong>Medication:</strong> Lisinopril</p>
+      <p><strong>Dosage:</strong> 10 mg</p>
+      <p><strong>Frequency:</strong> Once a day</p>
+      <p><strong>Prescribed by:</strong> Dr. Johnson</p>
+      <p><strong>Date:</strong> 2024-08-15</p>
+    </div>
+
+  </div>
+</body>
+</html>

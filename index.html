@@ -1,0 +1,325 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>AI Health Assistant</title>
+  <style>
+* {
+  box-sizing: border-box;
+}
+
+body {
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  background: linear-gradient(to right top, #e0f7fa, #e1bee7);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+  margin: 0;
+  padding: 20px;
+  animation: fadeIn 1s ease-in;
+}
+
+h1 {
+  font-size: 2.8em;
+  color: #4a148c;
+  margin-bottom: 10px;
+  animation: slideDown 0.6s ease-out;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+p {
+  font-size: 1.1em;
+  color: #333;
+  margin-bottom: 25px;
+  text-align: center;
+  max-width: 90%;
+}
+
+input {
+  padding: 14px;
+  font-size: 17px;
+  width: 100%;
+  max-width: 450px;
+  border: none;
+  border-radius: 12px;
+  margin-bottom: 15px;
+  background: rgba(255, 255, 255, 0.2);
+  backdrop-filter: blur(10px);
+  color: #333;
+  border: 2px solid #7b1fa2;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+  transition: box-shadow 0.3s ease, border-color 0.3s;
+}
+
+input::placeholder {
+  color: #555;
+}
+
+input:focus {
+  border-color: #4a148c;
+  box-shadow: 0 0 10px #7b1fa2;
+  outline: none;
+}
+
+button {
+  padding: 12px 25px;
+  font-size: 16px;
+  border: none;
+  border-radius: 12px;
+  background: #7b1fa2;
+  color: white;
+  margin: 10px;
+  cursor: pointer;
+  transition: background 0.3s ease, transform 0.2s ease;
+  box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+  width: 100%;
+  max-width: 200px;
+}
+
+button:hover {
+  background: #4a148c;
+  transform: translateY(-2px);
+}
+
+#response {
+  margin-top: 30px;
+  font-size: 18px;
+  color: #1a237e;
+  white-space: pre-line;
+  max-width: 90%;
+  background: rgba(255, 255, 255, 0.3);
+  padding: 20px;
+  border-radius: 12px;
+  backdrop-filter: blur(10px);
+  animation: fadeIn 0.5s ease-in;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes slideDown {
+  from { transform: translateY(-30px); opacity: 0; }
+  to { transform: translateY(0); opacity: 1; }
+}
+
+@media (max-width: 600px) {
+  h1 {
+    font-size: 2em;
+    flex-direction: column;
+    text-align: center;
+  }
+
+  input, button, #response {
+    width: 100%;
+    max-width: 100%;
+  }
+
+  button {
+    margin: 8px 0;
+  }
+  }
+
+  #menu {
+    display: none; /* hidden by default */
+    position: fixed;
+    top: 60px;
+    right: 20px;
+    background: rgba(255, 255, 255, 0.8);
+    backdrop-filter: blur(10px);
+    padding: 15px;
+    border-radius: 12px;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+    z-index: 999;
+  }
+
+  #menuToggle {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    background: #7b1fa2;
+    color: white;
+    border: none;
+    padding: 10px 15px;
+    border-radius: 8px;
+    font-size: 16px;
+    cursor: pointer;
+    z-index: 1000;
+  }
+  #menuToggle:hover {
+    background-color: #4a148c;
+  }
+
+  #menu button {
+    display: block;
+    margin: 8px 0;
+    padding: 10px 20px;
+    background: #7b1fa2;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    width: 200px;
+  }
+
+  #menu button:hover {
+    background: #4a148c;
+  }
+
+  @media (max-width: 600px) {
+    #menu {
+      width: 100%;
+      right: 0;
+      left: 0;
+      bottom: 0;
+      top: auto;
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+    }
+
+    #menu button {
+      width: 45%;
+      margin: 5px;
+    }
+  }
+
+  </style>
+</head>
+<body>
+  <button id="menuToggle" onclick="toggleMenu()">☰ Menu</button>
+  <div id="menu">
+    <button onclick="redirectToLabReports()">Lab Reports</button>
+    <button onclick="redirectToAppointments()">Appointments</button>
+    <button onclick="redirectToPrescriptions()">Prescriptions</button>
+    <button onclick="showDoctorMessage()">Contact Doctor</button>
+  </div>
+
+  <h1>🩺 AI Health Assistant</h1>
+  <p>Type your health question and click "Ask" or use the voice option.</p>
+  <input type="text" id="question" placeholder="Message AI Doctor">
+  <div>
+    <button onclick="getResponse()">Ask</button>
+    <button onclick="startListening()">🎤 Ask with Voice</button>
+  </div>
+  <div id="response"></div>
+
+<script>
+
+  function toggleMenu() {
+  const menu = document.getElementById('menu');
+  if (menu.style.display === 'block') {
+      menu.style.display = 'none';
+    } else {
+      menu.style.display = 'block';
+    }
+  }
+
+  document.addEventListener('click', function (e) {
+  const menu = document.getElementById('menu');
+  const toggle = document.getElementById('menuToggle');
+  if (!menu.contains(e.target) && !toggle.contains(e.target)) {
+      menu.style.display = 'none';
+    }
+  });
+
+
+  const OPENAI_API_KEY = "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"; // 🔐 Replace with your actual API key
+
+  async function getResponse() {
+    const question = document.getElementById("question").value.trim();
+    if (!question) return;
+
+    document.getElementById("response").innerText = "Thinking...";
+
+    try {
+      const res = await fetch("https://api.openai.com/v1/chat/completions", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          "Authorization": `Bearer ${OPENAI_API_KEY}`
+        },
+        body: JSON.stringify({
+          model: "gpt-3.5-turbo",
+          messages: [
+            {
+              role: "system",
+              content: "You are an AI health assistant. Answer clearly and kindly, but say to consult a doctor if serious."
+            },
+            { role: "user", content: question }
+          ]
+        })
+      });
+
+      const data = await res.json();
+      const answer = data.choices?.[0]?.message?.content || "I couldn't find an answer.";
+
+      speak(answer);
+      document.getElementById("response").innerText = `You asked: ${question}\n\nAssistant: ${answer}`;
+    } catch (error) {
+      console.error(error);
+      document.getElementById("response").innerText = "Something went wrong. Please try again.";
+      speak("Sorry, something went wrong.");
+    }
+  }
+
+  function speak(text) {
+    const synth = window.speechSynthesis;
+    const utter = new SpeechSynthesisUtterance(text);
+    utter.lang = 'en-US';
+    synth.speak(utter);
+  }
+
+  function startListening() {
+    const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+    if (!SpeechRecognition) {
+      alert("Speech recognition is not supported in this browser.");
+      return;
+    }
+
+    const recognition = new SpeechRecognition();
+    recognition.lang = 'en-US';
+    recognition.start();
+
+    recognition.onresult = function (event) {
+      const transcript = event.results[0][0].transcript;
+      document.getElementById("question").value = transcript;
+      getResponse();
+    };
+
+    recognition.onerror = function () {
+      speak("Sorry, I didn't catch that. Please try again.");
+    };
+  }
+
+  function redirectToLabReports() {
+    window.location.href = "./labreports.html";
+  }
+
+  function redirectToAppointments() {
+    window.location.href = "./appointments.html";
+  }
+
+  function redirectToPrescriptions() {
+    window.location.href = "./prescriptions.html";
+  }
+
+  function showDoctorMessage() {
+    alert("A message has been sent to your doctor. They will get back to you soon.");
+    // Optional: You could also redirect to a chat page or open a modal here.
+    // window.location.href = "/contact-doctor.html";
+  }
+
+</script>
+
+</body>
+</html>

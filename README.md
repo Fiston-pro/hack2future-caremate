@@ -60,7 +60,7 @@ You are CareMate, a friendly and knowledgeable virtual healthcare assistant. You
 
 1. Clone the repo:
    ```bash
-   git clone https://github.com/your-username/caremate-ai.git
+   git clone https://github.com/Fiston-pro/hack2future-caremate
    cd caremate-ai
     ```
 2. Open the HTML files directly in a browser:
